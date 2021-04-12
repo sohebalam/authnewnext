@@ -16,9 +16,9 @@ import { useRouter } from "next/router"
 // import { getData } from "../../utils/fetchData"
 import { useState } from "react"
 import baseUrl from "../../utils//baseUrl"
-// import { DataContext } from "../../store/GlobalState"
+import { DataContext } from "../../store/GlobalState"
 import { useContext } from "react"
-// import { addToCart } from "../../store/Actions"
+import { addToCart } from "../../store/Actions"
 
 const useStyles = makeStyles({
   root: {
@@ -34,8 +34,8 @@ const useStyles = makeStyles({
 const ProductDetail = (props) => {
   const [product, setProduct] = useState(props.product)
 
-  // const { state, dispatch } = useContext(DataContext)
-  // const { cart } = state
+  const { state, dispatch } = useContext(DataContext)
+  const { cart } = state
 
   const classes = useStyles()
   const router = useRouter()

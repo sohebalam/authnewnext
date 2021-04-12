@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import {
   Card,
@@ -14,10 +14,8 @@ import {
   Container,
 } from "@material-ui/core/"
 import Link from "next/link"
-// import Likes from "./Likes"
-// import { likeProduct } from "../redux/actions/productActions"
-
-// import { useHistory } from "react-router-dom"
+import { DataContext } from "../store/GlobalState"
+import { addToCart } from "../store/Actions"
 
 const useStyles = makeStyles({
   root: {
@@ -26,9 +24,18 @@ const useStyles = makeStyles({
 })
 
 const ProductCard = ({ product }) => {
-  //   const history = useHistory()
+  const { state, dispatch } = useContext(DataContext)
+  const { cart } = state
 
-  //   const user = JSON.parse(localStorage.getItem("userInfo"))
+  useEffect(() => {
+    const cart_update = JSON.parse(localStorage.getItem("cart_update"))
+
+    if (cart_update) dispatch({ type: "ADD_CART", payload: cart_update })
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("cart_update", JSON.stringify(cart))
+  }, [cart])
 
   //   const dispatch = useDispatch()
   const submitHandler = (e) => {
@@ -62,14 +69,15 @@ const ProductCard = ({ product }) => {
               variant="contained"
               color="secondary"
               style={{ marginRight: "0.8rem" }}
+              onClick={() => dispatch(addToCart(product, cart))}
             >
-              <Link
+              {/* <Link
                 href={`/product/${product._id}`}
                 style={{ color: "white" }}
                 underline="none"
-              >
-                Buy Now
-              </Link>
+              > */}
+              Buy Now
+              {/* </Link> */}
             </Button>
             <Typography
               style={{ color: "black", marginLeft: "0.5rem" }}

@@ -7,12 +7,12 @@ import MenuIcon from "@material-ui/icons/Menu"
 // import logo from "../image/v3.jpg"
 // import logo from "../image/v3.png"
 import Image from "next/image"
-import { Button, Typography, Link, Box } from "@material-ui/core"
+import { Button, Typography, Link, Box, Badge } from "@material-ui/core"
 import PersonIcon from "@material-ui/icons/Person"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
-// import { DataContext } from "../store/GlobalState"
+import { DataContext } from "../store/GlobalState"
 import cookie from "js-cookie"
 import { useRouter } from "next/router"
 import PublishIcon from "@material-ui/icons/Publish"
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const cookieuser = parseCookies()
   const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
-  // const { state, dispatch } = useContext(DataContext)
-  // const { auth } = state
+  const { state, dispatch } = useContext(DataContext)
+  const { cart } = state
   const router = useRouter()
   const classes = useStyles()
   const registerHandler = () => {}
@@ -83,13 +83,19 @@ export default function NavBar() {
                   alignItems: "right",
                 }}
               >
-                <Link style={{ color: "white" }} href="/cart">
+                <Link style={{ color: "white" }} href="/cart/cart">
                   <Button
                     color="inherit"
                     onClick={logoutHandler}
-                    style={{ marginRight: "0.5rem" }}
+                    style={{ marginRight: "0.7rem" }}
                   >
-                    <ShoppingCartIcon style={{ marginRight: "0.25rem" }} />
+                    <Badge
+                      badgeContent={cart?.length}
+                      color="secondary"
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <ShoppingCartIcon style={{ marginRight: "0.25rem" }} />
+                    </Badge>
                     Cart
                   </Button>
                 </Link>

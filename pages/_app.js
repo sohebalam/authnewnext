@@ -1,5 +1,5 @@
 import "../styles/globals.css"
-// import { DataProvider } from "../store/GlobalState"
+import { DataProvider } from "../store/GlobalState"
 
 import { ServerStyleSheets, ThemeProvider } from "@material-ui/core"
 import theme from "../theme"
@@ -9,11 +9,11 @@ function MyApp({ Component, pageProps }) {
   const sheets = new ServerStyleSheets()
   return sheets.collect(
     <ThemeProvider theme={theme}>
-      {/* <DataProvider> */}
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      {/* </DataProvider> */}
+      <DataProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </DataProvider>
     </ThemeProvider>
   )
 }

@@ -3,7 +3,7 @@ import React from "react"
 
 const Footer = () => {
   return (
-    <Box style={{ marginTop: "1rem", marginBottom: "2rem" }}>
+    <Box style={{ marginTop: "2rem", marginBottom: "2rem" }}>
       {/* <Container> */}
       <div align="center">
         <hr />
