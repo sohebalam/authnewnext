@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -15,6 +15,8 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 // import { DataContext } from "../store/GlobalState"
 import cookie from "js-cookie"
 import { useRouter } from "next/router"
+import PublishIcon from "@material-ui/icons/Publish"
+import { parseCookies } from "nookies"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function NavBar() {
+  const cookieuser = parseCookies()
+  const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
   // const { state, dispatch } = useContext(DataContext)
   // const { auth } = state
   const router = useRouter()
@@ -36,6 +40,7 @@ export default function NavBar() {
   const registerHandler = () => {}
   const logoutHandler = () => {
     cookie.remove("token")
+    cookie.remove("user")
     router.push("/auth/login")
   }
   const loginHandler = () => {}
@@ -45,10 +50,12 @@ export default function NavBar() {
       {/* <Container> */}
       <AppBar position="static" style={{ color: "primary" }}>
         <Toolbar>
-          <IconButton>
-            <Image src="/v3.png" alt="me" width="45" height="45" />
-            {/* <img src="../public/v3.png" /> */}
-          </IconButton>
+          <Link href="/">
+            <IconButton>
+              <Image src="/v3.png" alt="me" width="45" height="45" />
+              {/* <img src="../public/v3.png" /> */}
+            </IconButton>
+          </Link>
 
           <Typography variant="h6" className={classes.title}>
             OpenFreeUni
@@ -86,34 +93,43 @@ export default function NavBar() {
                     Cart
                   </Button>
                 </Link>
-                {/* <Link style={{ color: "white" }} href="/login"> */}
-                <Button
-                  color="inherit"
-                  onClick={logoutHandler}
-                  style={{ marginRight: "0.5rem" }}
-                >
-                  <ExitToAppIcon style={{ marginRight: "0.25rem" }} />
-                  LogOut
-                </Button>
-                {/* </Link> */}
+                {(user.role === "admin" || user.role === "root") && (
+                  <Link style={{ color: "white" }} href="/product/upload">
+                    <Button color="inherit" style={{ marginRight: "0.5rem" }}>
+                      <PublishIcon style={{ marginRight: "0.25rem" }} />
+                      upload
+                    </Button>
+                  </Link>
+                )}
+                {user ? (
+                  <Button
+                    color="inherit"
+                    onClick={logoutHandler}
+                    style={{ marginRight: "0.5rem" }}
+                  >
+                    <ExitToAppIcon style={{ marginRight: "0.25rem" }} />
+                    LogOut
+                  </Button>
+                ) : (
+                  <>
+                    <Link style={{ color: "white" }} href="/auth/register">
+                      <Button color="inherit" onClick={registerHandler}>
+                        <AssignmentIcon style={{ marginRight: "0.25rem" }} />
+                        Register
+                      </Button>
+                    </Link>
+                    <Link style={{ color: "white" }} href="/auth/login">
+                      <Button color="inherit" onClick={loginHandler}>
+                        <PersonIcon style={{ marginRight: "0.25rem" }} />
+                        Login
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </Box>
             </>
 
-            <>
-              {" "}
-              <Link style={{ color: "white" }} href="/auth/register">
-                <Button color="inherit" onClick={registerHandler}>
-                  <AssignmentIcon style={{ marginRight: "0.25rem" }} />
-                  Register
-                </Button>
-              </Link>
-              <Link style={{ color: "white" }} href="/auth/login">
-                <Button color="inherit" onClick={loginHandler}>
-                  <PersonIcon style={{ marginRight: "0.25rem" }} />
-                  Login
-                </Button>
-              </Link>
-            </>
+            <> </>
           </>
         </Toolbar>
       </AppBar>
