@@ -32,9 +32,9 @@ export default function CheckoutSteps({ step1, step2, step3, step4 }) {
       {step1 ? (
         <StyledBreadcrumb
           component="a"
-          href="/cart"
+          href="/cart/cart"
           label="1 Cart"
-          onClick={() => <Link href="/cart" />}
+          onClick={() => <Link href="/cart/cart" />}
           style={{ backgroundColor: "#C0C0C0" }}
         />
       ) : (
@@ -43,9 +43,9 @@ export default function CheckoutSteps({ step1, step2, step3, step4 }) {
       {step2 ? (
         <StyledBreadcrumb
           component="a"
-          href="/address"
+          href="/cart/address"
           label="2 Address"
-          onClick={() => <Link href="/address" />}
+          onClick={() => <Link href="/cart/address" />}
           style={{ backgroundColor: "#C0C0C0" }}
         />
       ) : (
@@ -54,9 +54,9 @@ export default function CheckoutSteps({ step1, step2, step3, step4 }) {
       {step3 ? (
         <StyledBreadcrumb
           component="a"
-          href="/payment"
+          href="/cart/payment"
           label="3 Payment"
-          onClick={() => <Link href="/payment" />}
+          onClick={() => <Link href="/cart/payment" />}
           style={{ backgroundColor: "#C0C0C0" }}
         />
       ) : (
@@ -66,9 +66,9 @@ export default function CheckoutSteps({ step1, step2, step3, step4 }) {
       {step4 ? (
         <StyledBreadcrumb
           component="a"
-          href="/placeorder"
+          href="/cart/placeorder"
           label="4 Place Order"
-          onClick={() => <Link href="/payment" />}
+          onClick={() => <Link href="/cart/payment" />}
           style={{ backgroundColor: "#C0C0C0" }}
         />
       ) : (

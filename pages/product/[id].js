@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core"
 import Link from "next/link"
 import { makeStyles } from "@material-ui/core/styles"
-// import products from "../../products"
+
 import Image from "next/image"
 import { useRouter } from "next/router"
 

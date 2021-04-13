@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useState } from "react"
-import baseURL from "../../utils/baseUrl"
+import baseURL from "../utils/baseUrl"
 import FileBase from "react-file-base64"
 import { parseCookies } from "nookies"
 

@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const cookieuser = parseCookies()
   const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
+
   const { state, dispatch } = useContext(DataContext)
   const { cart } = state
   const router = useRouter()
@@ -84,11 +85,7 @@ export default function NavBar() {
                 }}
               >
                 <Link style={{ color: "white" }} href="/cart/cart">
-                  <Button
-                    color="inherit"
-                    onClick={logoutHandler}
-                    style={{ marginRight: "0.7rem" }}
-                  >
+                  <Button color="inherit" style={{ marginRight: "0.7rem" }}>
                     <Badge
                       badgeContent={cart?.length}
                       color="secondary"
@@ -99,13 +96,17 @@ export default function NavBar() {
                     Cart
                   </Button>
                 </Link>
+
                 {(user.role === "admin" || user.role === "root") && (
-                  <Link style={{ color: "white" }} href="/product/upload">
-                    <Button color="inherit" style={{ marginRight: "0.5rem" }}>
-                      <PublishIcon style={{ marginRight: "0.25rem" }} />
-                      upload
-                    </Button>
-                  </Link>
+                  // <Link href="/upload">
+                  <Button
+                    style={{ color: "white" }}
+                    onClick={() => router.push("/upload")}
+                  >
+                    <AssignmentIcon style={{ marginRight: "0.25rem" }} />
+                    Upload
+                  </Button>
+                  // </Link>
                 )}
                 {user ? (
                   <Button

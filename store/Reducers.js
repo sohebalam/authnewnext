@@ -9,6 +9,26 @@ const reducers = (state, action) => {
         ...state,
         cart: action.payload,
       }
+    case ACTIONS.ADD_MODAL:
+      return {
+        ...state,
+        modal: action.payload,
+      }
+    case ACTIONS.ADD_ADDRESS:
+      return {
+        ...state,
+        address: action.payload,
+      }
+    case ACTIONS.ADD_PAYMENT:
+      return {
+        ...state,
+        payment: action.payload,
+      }
+    case ACTIONS.ADD_ORDER:
+      return {
+        ...state,
+        order: action.payload,
+      }
 
     default:
       return state

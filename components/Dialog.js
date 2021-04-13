@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ConfirmDialog(props) {
+export default function DialogComponent(props) {
   const { state, dispatch } = useContext(DataContext)
-  const { modal, auth } = state
+  const { modal } = state
   const { confirmDialog, setConfirmDialog } = props
   const classes = useStyles()
 
@@ -52,7 +52,10 @@ export default function ConfirmDialog(props) {
   }
 
   return (
-    <Dialog open={confirmDialog.isOpen} classes={{ paper: classes.dialog }}>
+    <Dialog
+      open={confirmDialog?.isOpen || false}
+      classes={{ paper: classes.dialog }}
+    >
       <DialogTitle className={classes.dialogTitle}>
         {modal.title}
         {/* <IconButton disableRipple className={classes.titleIcon}> */}
@@ -60,8 +63,7 @@ export default function ConfirmDialog(props) {
         {/* </IconButton> */}
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>
-        <Typography variant="h6">{confirmDialog.title}</Typography>
-        <Typography variant="subtitle2">{confirmDialog.subTitle}</Typography>
+        <Typography variant="h6">{confirmDialog?.title}</Typography>
       </DialogContent>
       <DialogActions className={classes.dialogAction}>
         <Controls.Button

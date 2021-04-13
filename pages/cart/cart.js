@@ -17,17 +17,22 @@ import {
   Typography,
 } from "@material-ui/core"
 import CartItem from "../../components/CartItem"
-import { getData } from "../../utils/fetchData"
+// import { getData } from "../../utils/fetchData"
 import { Alert } from "@material-ui/lab"
 import CheckOutSteps from "../../components/CheckOutSteps"
+import { parseCookies } from "nookies"
+
 const Cart = () => {
+  const cookieuser = parseCookies()
+  const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
+
   const { state, dispatch } = useContext(DataContext)
   const { cart } = state
 
   const [total, setTotal] = useState(0)
 
   useEffect(() => {
-    const cartLocal = JSON.parse(localStorage.getItem("cart_constant"))
+    const cartLocal = JSON.parse(localStorage.getItem("cart_update"))
     // if (cartlocal && cartLocal.length > 0) {
     const updateCart = () => {
       for (const item of cartLocal) {
@@ -43,6 +48,7 @@ const Cart = () => {
         }
       }
     }
+
     updateCart()
   }, [cart])
 
@@ -68,7 +74,7 @@ const Cart = () => {
             display: "flex",
           }}
         >
-          <Image src="/emptycart.png" width="800rem" height="500rem" />
+          <Image src="/empty_cart.jpg" width="800rem" height="500rem" />
         </Container>
       </>
     )
@@ -88,13 +94,10 @@ const Cart = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  {/* <Box marginLeft="5rem">Image</Box> */}
-                </TableCell>
+                <TableCell></TableCell>
                 <TableCell size="small">Course Title</TableCell>
                 <TableCell size="small">
                   <Box marginLeft="2.5rem">Quantity</Box>
-                  {/* <Button></Button> */}
                 </TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Remove</TableCell>
@@ -102,7 +105,6 @@ const Cart = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* <TableCell> */}
               {cart.map((item) => (
                 <CartItem
                   key={item._id}
@@ -111,14 +113,13 @@ const Cart = () => {
                   cart={cart}
                 />
               ))}
-              {/* </TableCell> */}
             </TableBody>
           </Table>
         </Grid>
         <Grid item xs={3}>
           <Card align="center" style={{ marginTop: "5rem" }}>
             <Link
-              href={auth.user ? "/cart/address" : "/auth/login"}
+              href={user ? "/cart/address" : "/auth/login"}
               underline="none"
             >
               <Button
@@ -131,8 +132,8 @@ const Cart = () => {
               >
                 Proceed to payment
               </Button>
-              <h2>Total: £{total}</h2>
             </Link>
+            <h2>Total: £{total}</h2>
           </Card>
         </Grid>
       </Grid>
