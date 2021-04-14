@@ -1,17 +1,26 @@
+import Authenticated from "../../../../utils/Authenticated"
 import Order from "../../../../models/orderModel"
 
-export const addOrderItems = async (req, res) => {
-  const { orderItems, address, paymentMethod, subtotal, tax, total } = req.body
+export const addOrderItems = Authenticated(async (req, res) => {
+  const { payment, subtotal, tax, total } = req.body
+  const { cart: orderItems } = req.body
+  // console.log(address, cart, payment)
+  // console.log(cart._id)
+
   try {
     if (orderItems && orderItems.length === 0) {
       res.status(400)
       throw new Error("No order items")
     } else {
       const order = new Order({
-        orderItems,
-        user: req.user._id,
-        address,
-        paymentMethod,
+        // orderItems,
+        // product: cart._id,
+        user: req.userId,
+        // address: address.data,
+        // city: address.city,
+        // postalCode: address.postalCode,
+        // country: address.country,
+        paymentMethod: payment.data,
         subtotal,
         tax,
         total,
@@ -23,8 +32,9 @@ export const addOrderItems = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: error })
+    console.log(error)
   }
-}
+})
 
 export const getOrderById = async (req, res) => {
   const order = await Order.findById(req.params.id).populate(

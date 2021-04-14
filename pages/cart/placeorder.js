@@ -22,6 +22,8 @@ import { useRouter } from "next/router"
 // import { orderCreateReducer } from "../../reducers/orderReducer"
 import { DataContext } from "../../store/GlobalState"
 import CartItem from "../../components/CartItem"
+import baseUrl from "../../utils/baseUrl"
+import { parseCookies } from "nookies"
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -40,14 +42,18 @@ const useStyles = makeStyles({
 })
 
 const PlaceOrderPage = () => {
+  const { token } = parseCookies()
+  // console.log(token)
+  // const cookieuser = parseCookies()
+  // const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
   const [subtotal, setSubTotal] = useState(0)
-  // const [tax, setTax] = useState(0)
-  // const [total, setTotal] = useState(0)
+  // const [jwttoken, setJwttoken] = useState(token)
 
   const classes = useStyles()
   const router = useRouter()
   const { state, dispatch } = useContext(DataContext)
   const { address, cart, payment } = state
+  console.log(cart, payment)
   useEffect(() => {
     // router.push(`/orders/${order._id}`)
     // eslint-disable-next-line
@@ -63,17 +69,32 @@ const PlaceOrderPage = () => {
     }
     getTotal()
   }, [cart])
-  const placeOrderHandler = () => {
-    // dispatch(
-    //   createOrder({
-    //     orderItems: cart.cartItems,
-    //     shippingAddress: cart.shippingAddress,
-    //     paymentMethod: cart.paymentMethod,
-    //     itemsPrice: cart.itemsPrice,
-    //     taxPrice: cart.taxPrice,
-    //     totalPrice: cart.totalPrice,
-    //   })
-    // )
+
+  const placeOrderHandler = async (e) => {
+    // e.preventDefault()
+
+    const res = await fetch(`${baseUrl}/api/orders/order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        cart: cart,
+        address: address,
+        payment: payment,
+        subtotal,
+        tax,
+        total,
+      }),
+    })
+
+    const res2 = await res.json()
+    if (res2.error) {
+      console.log(res2.error)
+    } else {
+      console.log(res2.message)
+    }
   }
 
   const addDecimals = (num) => {
@@ -227,7 +248,9 @@ const PlaceOrderPage = () => {
                 <Button
                   variant="contained"
                   fullWidth
-                  onClick={placeOrderHandler}
+                  // value={jwttoken}
+                  // onChange={(e) => setJwttoken(e.target.value)}
+                  onClick={() => placeOrderHandler(token)}
                 >
                   Place Order
                 </Button>
