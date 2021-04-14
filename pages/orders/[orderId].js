@@ -1,5 +1,4 @@
-import { parseCookies } from "nookies"
-import nookies from "nookies"
+import nookies, { parseCookies } from "nookies"
 import { Alert } from "@material-ui/lab"
 import baseUrl from "../../utils/baseUrl"
 import { getData } from "../../utils/fetchData"
@@ -20,7 +19,7 @@ import {
   CircularProgress,
 } from "@material-ui/core"
 import Image from "next/image"
-
+import { PayPalButton } from "react-paypal-button-v2"
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -39,8 +38,12 @@ const useStyles = makeStyles({
 })
 
 const OrderId = (props) => {
-  const [sdkReady, setSdkReady] = useState(false)
-  const [loadingPay, setloadingPay] = useState("")
+  // const sdk = localStorage.getItem("__paypal_storage__")
+  // if (sdk) {
+  //   ;() => setSdkReady(true)
+  // }
+  // const [sdkReady, setSdkReady] = useState(false)
+  // const [loadingPay, setloadingPay] = useState("")
 
   const classes = useStyles()
   const order = props
@@ -52,6 +55,29 @@ const OrderId = (props) => {
   const subtotal = addDecimals(
     order.orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
   )
+  const { token } = parseCookies()
+  const submitPayment = async (orderId, paymentResult) => {
+    const res = await fetch(`${baseUrl}/api/orders/order/pay/${orderId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    })
+    const result = await res.json()
+    if (result.error) {
+      console.log(result.error)
+    } else {
+      console.log("Pay saved")
+    }
+  }
+  const router = useRouter()
+  const { orderId } = router.query
+  // console.log(orderId)
+  const successPaymentHandler = (paymentResult) => {
+    console.log(paymentResult)
+    submitPayment(orderId, paymentResult)
+  }
 
   return (
     <>
@@ -201,15 +227,15 @@ const OrderId = (props) => {
                 <CardActions>
                   {!order.isPaid && (
                     <List>
-                      {loadingPay && <Alert />}
+                      {/* {loadingPay && <Alert />}
                       {!sdkReady ? (
                         <Alert />
-                      ) : (
-                        <PayPalButton
-                          amount={order.total}
-                          onSuccess={successPaymentHandler}
-                        />
-                      )}
+                      ) : ( */}
+                      <PayPalButton
+                        amount={order.total}
+                        onSuccess={successPaymentHandler}
+                      />
+                      {/* )} */}
                     </List>
                   )}
                 </CardActions>
@@ -240,14 +266,29 @@ export async function getServerSideProps(ctx) {
       Authorization: token,
     },
   })
-
   const result = await res.json()
-  // console.log(result)
+
   // server side rendering
   return {
     props: result, // will be passed to the page component as props
+    // pay: result2, // will be passed to the page component as props
   }
 }
+// export async function getServerSideProps(ctx) {
+//   // console.log(ctx)
+//   const cookies = nookies.get(ctx)
+//   // const res = await getData(`orders/order/${OrderId}`)
+
+//   const { token } = cookies
+//   const { orderId } = ctx.query
+//   // console.log(token, ctx.query.orderId)
+
+//   // console.log(result)
+//   // server side rendering
+//   return {
+//     props: result2, // will be passed to the page component as props
+//   }
+// }
 
 // import { getOrderDetails, payOrder } from "../../redux/actions/orderActions"
 // import axios from "axios"

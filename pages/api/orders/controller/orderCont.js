@@ -34,7 +34,7 @@ export const getOrderById = Authenticated(async (req, res) => {
 
   const order = await Order.findById(req.query.orderId).populate(
     "user",
-    "fistName lastName email",
+    "firstName lastName email",
     User
   )
 
@@ -53,7 +53,8 @@ export const getOrderById = Authenticated(async (req, res) => {
 })
 
 export const updateOrderToPaid = Authenticated(async (req, res) => {
-  const order = await Order.findById(req.params.id)
+  console.log(req.query)
+  const order = await Order.findById(req.query.orderId)
   try {
     if (order) {
       order.isPaid = true
