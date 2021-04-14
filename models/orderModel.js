@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import User from "../models/userModel"
 
 const orderSchema = mongoose.Schema(
   {
@@ -7,27 +8,26 @@ const orderSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    // orderItems: [
-    //   {
-    //     title: { type: String, required: true },
-    //     likes: { type: String },
-    //     tags: { type: String },
-    //     quantity: { type: Number, required: true, default: 1 },
-    //     selectedFile: { type: String, required: true },
-    //     price: { type: Number, required: true },
-    //     _id: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       required: true,
-    //       ref: "Product",
-    //     },
-    //   },
-    // ],
-    // address: {
-    //   address: { type: String, required: true },
-    //   city: { type: String, required: true },
-    //   postalCode: { type: String, required: true },
-    //   country: { type: String, required: true },
-    // },
+
+    orderItems: [
+      {
+        title: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        selectedFile: { type: String, required: true },
+        price: { type: Number, required: true },
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Product",
+        },
+      },
+    ],
+    address: {
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      postalCode: { type: String, required: true },
+      country: { type: String, required: true },
+    },
     paymentMethod: {
       type: String,
       required: true,
@@ -49,14 +49,14 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: 0.0,
     },
-    // isPaid: {
-    //   type: Boolean,
-    //   required: true,
-    //   default: false,
-    // },
-    // paidAt: {
-    //   type: Date,
-    // },
+    isPaid: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    paidAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

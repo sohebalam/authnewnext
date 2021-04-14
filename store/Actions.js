@@ -5,6 +5,7 @@ export const ACTIONS = {
   ADD_ADDRESS: "ADD_ADDRESS",
   ADD_PAYMENT: "ADD_PAYMENT",
   ADD_ORDER: "ADD_ORDER",
+  ORDER_PAY: "ORDER_PAY",
 }
 
 export const addToCart = (product, cart) => {

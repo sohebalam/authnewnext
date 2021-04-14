@@ -14,6 +14,7 @@ import Container from "@material-ui/core/Container"
 import valid from "../../utils/valid"
 import { Alert } from "@material-ui/lab"
 import baseUrl from "../../utils/baseUrl"
+import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,6 +43,7 @@ export default function SignUp() {
   const [lastName, setLastName] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const classes = useStyles()
+  const router = useRouter()
 
   const submitHandler = async (e) => {
     e.preventDefault()

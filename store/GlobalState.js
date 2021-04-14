@@ -11,6 +11,7 @@ export const DataProvider = ({ children }) => {
     address: [],
     payment: String,
     order: [],
+    orderPay: {},
   }
   const [state, dispatch] = useReducer(reducers, initialState)
   const { cart, address, payment } = state
@@ -25,16 +26,16 @@ export const DataProvider = ({ children }) => {
     if (address_update)
       dispatch({ type: "ADD_ADDRESS", payload: address_update })
 
-    const payment_update = JSON.parse(localStorage.getItem("payment_update"))
+    // const payment_update = JSON.parse(localStorage.getItem("payment_update"))
 
-    if (payment_update)
-      dispatch({ type: "ADD_PAYMENT", payload: payment_update })
+    // if (payment_update)
+    //   dispatch({ type: "ADD_PAYMENT", payload: payment_update })
   }, [])
 
   useEffect(() => {
     localStorage.setItem("cart_update", JSON.stringify(cart))
     localStorage.setItem("address_update", JSON.stringify(address))
-    localStorage.setItem("payment_update", JSON.stringify(payment))
+    // localStorage.setItem("payment_update", JSON.stringify(payment))
   }, [cart, address])
 
   return (

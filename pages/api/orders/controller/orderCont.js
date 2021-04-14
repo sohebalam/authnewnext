@@ -1,11 +1,8 @@
 import Authenticated from "../../../../utils/Authenticated"
 import Order from "../../../../models/orderModel"
-
+import User from "../../../../models/userModel"
 export const addOrderItems = Authenticated(async (req, res) => {
-  const { payment, subtotal, tax, total } = req.body
-  const { cart: orderItems } = req.body
-  // console.log(address, cart, payment)
-  // console.log(cart._id)
+  const { cart: orderItems, payment, subtotal, address, tax, total } = req.body
 
   try {
     if (orderItems && orderItems.length === 0) {
@@ -13,13 +10,9 @@ export const addOrderItems = Authenticated(async (req, res) => {
       throw new Error("No order items")
     } else {
       const order = new Order({
-        // orderItems,
-        // product: cart._id,
+        orderItems,
         user: req.userId,
-        // address: address.data,
-        // city: address.city,
-        // postalCode: address.postalCode,
-        // country: address.country,
+        address,
         paymentMethod: payment.data,
         subtotal,
         tax,
@@ -28,7 +21,7 @@ export const addOrderItems = Authenticated(async (req, res) => {
 
       const createdOrder = await order.save()
 
-      res.status(201).json(createdOrder)
+      res.status(201).json({ order: createdOrder, success: true })
     }
   } catch (error) {
     res.status(500).json({ error: error })
@@ -36,11 +29,19 @@ export const addOrderItems = Authenticated(async (req, res) => {
   }
 })
 
-export const getOrderById = async (req, res) => {
-  const order = await Order.findById(req.params.id).populate(
+export const getOrderById = Authenticated(async (req, res) => {
+  // console.log(req.query.orderId, req.userId)
+
+  const order = await Order.findById(req.query.orderId).populate(
     "user",
-    "firstName lastName email"
+    "fistName lastName email",
+    User
   )
+
+  // populate(
+  //   "user",
+  //   "firstName lastName email"
+  // )
   try {
     if (order) {
       res.json(order)
@@ -49,9 +50,9 @@ export const getOrderById = async (req, res) => {
     res.status(404)
     throw new Error("Order not found")
   }
-}
+})
 
-export const updateOrderToPaid = async (req, res) => {
+export const updateOrderToPaid = Authenticated(async (req, res) => {
   const order = await Order.findById(req.params.id)
   try {
     if (order) {
@@ -70,7 +71,7 @@ export const updateOrderToPaid = async (req, res) => {
     res.status(404)
     throw new Error("Order not found")
   }
-}
+})
 
 export const getMyOrders = async (req, res) => {
   try {

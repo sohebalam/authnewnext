@@ -29,6 +29,11 @@ const reducers = (state, action) => {
         ...state,
         order: action.payload,
       }
+    case ACTIONS.ORDER_PAY:
+      return {
+        ...state,
+        pay: action.payload,
+      }
 
     default:
       return state

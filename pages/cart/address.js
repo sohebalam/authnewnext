@@ -49,7 +49,7 @@ const AddressPage = () => {
     e.preventDefault()
     dispatch({
       type: "ADD_ADDRESS",
-      payload: { data: address, city, postalCode, country },
+      payload: { address, city, postalCode, country },
     })
     router.push("/cart/payment")
   }

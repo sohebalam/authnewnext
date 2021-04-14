@@ -53,11 +53,6 @@ const PlaceOrderPage = () => {
   const router = useRouter()
   const { state, dispatch } = useContext(DataContext)
   const { address, cart, payment } = state
-  console.log(cart, payment)
-  useEffect(() => {
-    // router.push(`/orders/${order._id}`)
-    // eslint-disable-next-line
-  }, [])
 
   useEffect(() => {
     const getTotal = () => {
@@ -89,11 +84,15 @@ const PlaceOrderPage = () => {
       }),
     })
 
-    const res2 = await res.json()
-    if (res2.error) {
-      console.log(res2.error)
+    const result = await res.json()
+    if (result.error) {
+      console.log(result.error)
     } else {
-      console.log(res2.message)
+      console.log(result.order, result.success)
+      if (result.success === true) {
+        const { order } = result
+        router.push(`/orders/${order._id}`)
+      }
     }
   }
 
