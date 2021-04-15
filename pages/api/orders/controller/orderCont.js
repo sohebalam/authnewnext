@@ -53,17 +53,18 @@ export const getOrderById = Authenticated(async (req, res) => {
 })
 
 export const updateOrderToPaid = Authenticated(async (req, res) => {
-  console.log(req.query)
+  const { id, status, update_time, email_address } = req.body.paymentResult
   const order = await Order.findById(req.query.orderId)
+
   try {
     if (order) {
       order.isPaid = true
       order.paidAt = Date.now()
       order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.payer.email_address,
+        id: id,
+        status: status,
+        update_time: update_time,
+        email_address: email_address,
       }
       const updatedOrder = await order.save()
       res.json(updatedOrder)
