@@ -39,12 +39,6 @@ const useStyles = makeStyles({
 })
 
 const OrderId = (props) => {
-  // const sdk = localStorage.getItem("__paypal_storage__")
-  // if (sdk) {
-  //   ;() => setSdkReady(true)
-  // }
-  // const [sdkReady, setSdkReady] = useState(false)
-  // const [loadingPay, setloadingPay] = useState("")
   const { state, dispatch } = useContext(DataContext)
   const classes = useStyles()
   const order = props

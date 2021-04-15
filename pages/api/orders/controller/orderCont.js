@@ -75,14 +75,14 @@ export const updateOrderToPaid = Authenticated(async (req, res) => {
   }
 })
 
-export const getMyOrders = async (req, res) => {
+export const getMyOrders = Authenticated(async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id })
+    const orders = await Order.find({ user: req.userId })
     res.json(orders)
   } catch (error) {
     res.status(500).json({ messsage: "Server Error" })
   }
-}
+})
 export const getOrders = async (req, res) => {
   try {
     const orders = await Order.find().populate("user", "id firstName lastName")
