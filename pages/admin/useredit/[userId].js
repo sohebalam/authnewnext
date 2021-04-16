@@ -16,6 +16,8 @@ import {
   Checkbox,
   CircularProgress,
   FormControlLabel,
+  Radio,
+  RadioGroup,
   Table,
   TableBody,
   TableCell,
@@ -69,11 +71,11 @@ const UserEditPage = (props) => {
     e.preventDefault()
 
     const { token } = parseCookies()
-    console.log(id)
+
     const res = await fetch(`${baseUrl}/api/auth/users/${id}`, {
       method: "PUT",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: token,
       },
       body: JSON.stringify({
@@ -85,7 +87,6 @@ const UserEditPage = (props) => {
     })
 
     const result = await res.json()
-    console.log(result)
   }
 
   return (
@@ -154,7 +155,7 @@ const UserEditPage = (props) => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
-                <FormControlLabel
+                {/* <FormControlLabel
                   control={
                     <Checkbox
                       style={{ marginLeft: "1rem" }}
@@ -164,7 +165,25 @@ const UserEditPage = (props) => {
                     />
                   }
                   label="Is Admin"
-                />
+                /> */}
+                <RadioGroup
+                  row
+                  aria-label="gender"
+                  name="User Type"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                >
+                  <FormControlLabel
+                    value="user"
+                    control={<Radio />}
+                    label="User"
+                  />
+                  <FormControlLabel
+                    value="admin"
+                    control={<Radio />}
+                    label="Admin"
+                  />
+                </RadioGroup>
               </Grid>
               <Button
                 type="submit"

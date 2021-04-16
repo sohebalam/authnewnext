@@ -103,33 +103,30 @@ export const getUserById = Authenticated(async (req, res) => {
 
 export const adminUpdateUser = Authenticated(async (req, res) => {
   if (req.user.role === "admin") {
-    console.log(req.query, req.body)
-    // try {
-    //   const user = await User.findById(req.query.id)
-    //   // // console.log(user)
-    //   if (user) {
-    //     if (req.query.role === true) {
-    //       role = "admin"
-    //     }
-    //     user.firstName = req.body.firstName || user.firstName
-    //     user.lastName = req.body.lastName || user.lastName
-    //     user.email = req.body.email || user.email
-    //     user.role = role
-    //     const updatedUser = await user.save()
+    const { firstName, lastName, email, role } = req.body
+    console.log(firstName, lastName, email, role)
+    try {
+      const user = await User.findById(req.query.id)
+      if (user && req.body) {
+        user.firstName = firstName || user.firstName
+        user.lastName = lastName || user.lastName
+        user.email = email || user.email
+        user.role = role || user.role
+        const updatedUser = await user.save()
 
-    //     return res.json({
-    //       _id: updatedUser._id,
-    //       firstName: updatedUser.firstName,
-    //       lastName: updatedUser.lastName,
-    //       email: updatedUser.email,
-    //       role: updatedUser.role,
-    //     })
-    //   }
-    // } catch (error) {
-    //   console.error(error)
-    //   res.status(500)
-    //   throw new Error("Server Error")
-    // }
+        return res.json({
+          _id: updatedUser._id,
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          email: updatedUser.email,
+          role: updatedUser.role,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(500)
+      throw new Error("Server Error")
+    }
   }
 })
 // export const google = async (req, res) => {
