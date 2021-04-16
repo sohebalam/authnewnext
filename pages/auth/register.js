@@ -69,7 +69,7 @@ export default function SignUp() {
       console.log(res2.error)
     } else {
       console.log(res2.message)
-      router.push("/login")
+      router.push("/auth/login")
     }
   }
 

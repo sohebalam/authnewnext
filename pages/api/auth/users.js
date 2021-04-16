@@ -1,5 +1,5 @@
 import connectDB from "../../../utils/connectDB"
-import { getUsers } from "./userCont"
+import { deleteUser, getUsers } from "./userCont"
 
 connectDB()
 
@@ -11,8 +11,8 @@ export default async (req, res) => {
     // case "POST":
     //   await addOrderItems(req, res)
     //   break
-    // case "DELETE":
-    //   await deleteProduct(req, res)
-    //   break
+    case "DELETE":
+      await deleteUser(req, res)
+      break
   }
 }

@@ -62,68 +62,76 @@ export const updateUserProfile = async (req, res) => {
 
 //Admin Route
 export const getUsers = Authenticated(async (req, res) => {
-  console.log(req.userId, req.user)
-
   if (req.user.role === "admin") {
     const users = await User.find().select("-password")
     res.json({ users })
+  } else {
+    res.json({ message: "not admin" })
   }
-  //  else {
-  //   console.log("not admin")
-  // }
 })
 
-export const deleteUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id)
+export const deleteUser = Authenticated(async (req, res) => {
+  if (req.user.role === "admin") {
+    try {
+      const user = await User.findById(req.query.id)
 
-    if (user) {
-      await user.remove()
-      res.json({ message: "User removed" })
+      if (user) {
+        await user.remove()
+        res.json({ success: "User removed" })
+      }
+    } catch (error) {
+      res.status(404)
+      throw new Error("User not found")
     }
-  } catch (error) {
-    res.status(404)
-    throw new Error("User not found")
   }
-}
+})
 
-export const getUserById = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("-password")
-    if (user) {
-      res.json(user)
+export const getUserById = Authenticated(async (req, res) => {
+  if (req.user.role === "admin") {
+    try {
+      const user = await User.findById(req.query.id).select("-password")
+      // console.log(user)
+      if (user) {
+        res.json(user)
+      }
+    } catch (error) {
+      res.status(404)
+      throw new Error("User not found")
     }
-  } catch (error) {
-    res.status(404)
-    throw new Error("User not found")
   }
-}
+})
 
-export const adminUpdateUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id)
+export const adminUpdateUser = Authenticated(async (req, res) => {
+  if (req.user.role === "admin") {
+    console.log(req.query, req.body)
+    // try {
+    //   const user = await User.findById(req.query.id)
+    //   // // console.log(user)
+    //   if (user) {
+    //     if (req.query.role === true) {
+    //       role = "admin"
+    //     }
+    //     user.firstName = req.body.firstName || user.firstName
+    //     user.lastName = req.body.lastName || user.lastName
+    //     user.email = req.body.email || user.email
+    //     user.role = role
+    //     const updatedUser = await user.save()
 
-    if (user) {
-      user.firstName = req.body.firstName || user.firstName
-      user.lastName = req.body.lastName || user.lastName
-      user.email = req.body.email || user.email
-      user.isAdmin = req.body.isAdmin
-      const updatedUser = await user.save()
-
-      return res.json({
-        _id: updatedUser._id,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(500)
-    throw new Error("Server Error")
+    //     return res.json({
+    //       _id: updatedUser._id,
+    //       firstName: updatedUser.firstName,
+    //       lastName: updatedUser.lastName,
+    //       email: updatedUser.email,
+    //       role: updatedUser.role,
+    //     })
+    //   }
+    // } catch (error) {
+    //   console.error(error)
+    //   res.status(500)
+    //   throw new Error("Server Error")
+    // }
   }
-}
+})
 // export const google = async (req, res) => {
 //   const { result } = req.body
 //   const firstName = result.givenName

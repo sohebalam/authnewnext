@@ -131,6 +131,7 @@ const Account = ({ orders }) => {
   )
 }
 
+export default Account
 export async function getServerSideProps(ctx) {
   const { token } = parseCookies(ctx)
   if (!token) {
@@ -151,5 +152,3 @@ export async function getServerSideProps(ctx) {
     props: { orders: res2 },
   }
 }
-
-export default Account

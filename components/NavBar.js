@@ -17,6 +17,7 @@ import cookie from "js-cookie"
 import { useRouter } from "next/router"
 import PublishIcon from "@material-ui/icons/Publish"
 import { parseCookies } from "nookies"
+import Menu from "../components/Menu"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,13 +100,10 @@ export default function NavBar() {
 
                 {(user.role === "admin" || user.role === "root") && (
                   // <Link href="/upload">
-                  <Button
-                    style={{ color: "white" }}
-                    onClick={() => router.push("/upload")}
-                  >
+                  <Menu style={{ color: "white" }}>
                     <AssignmentIcon style={{ marginRight: "0.25rem" }} />
                     Upload
-                  </Button>
+                  </Menu>
                   // </Link>
                 )}
                 {user ? (
