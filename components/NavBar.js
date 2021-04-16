@@ -18,6 +18,7 @@ import { useRouter } from "next/router"
 import PublishIcon from "@material-ui/icons/Publish"
 import { parseCookies } from "nookies"
 import Menu from "../components/Menu"
+import ProfileMenu from "./ProfileMenu"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,18 +66,32 @@ export default function NavBar() {
           <>
             {/* {Object.keys(auth).length ? ( */}
             <>
-              <Box
-                style={{
-                  marginRight: "0.25rem",
-                  marginLeft: "0.75rem",
-                  marginTop: "0.75",
-                }}
-              >
-                <Typography style={{ marginTop: "0.25rem" }}>
-                  {" "}
-                  {/* Hello {auth.user?.firstName} {auth.user?.lastName} */}
-                </Typography>
-              </Box>
+              {user && (
+                <>
+                  <Box
+                    style={{
+                      marginRight: "0.25rem",
+                      marginLeft: "0.75rem",
+                      marginTop: "0.75",
+                    }}
+                  >
+                    <Typography style={{ marginTop: "0.25rem" }}>
+                      {" "}
+                      Hello {user?.firstName} {user?.lastName}
+                    </Typography>
+                  </Box>
+                  <Box
+                    style={{
+                      marginRight: "0.25rem",
+                      marginLeft: "0.75rem",
+                      marginTop: "0.75",
+                    }}
+                  >
+                    <ProfileMenu />
+                  </Box>
+                </>
+              )}
+
               <Box
                 style={{
                   marginTop: "0.25rem",

@@ -1,8 +1,9 @@
 import User from "../../../models/userModel"
 import bcrypt from "bcryptjs"
 import Authenticated from "../../../utils/Authenticated"
+import jwt from "jsonwebtoken"
 
-export const getUserProfile = async (req, res) => {
+export const getUserProfile = Authenticated(async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
 
@@ -12,7 +13,7 @@ export const getUserProfile = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        isAdmin: user.isAdmin,
+        role: user.role,
       })
     }
   } catch (error) {
@@ -20,31 +21,28 @@ export const getUserProfile = async (req, res) => {
     res.status(404)
     throw new Error("User not found")
   }
-}
+})
 
-export const updateUserProfile = async (req, res) => {
+export const updateUserProfile = Authenticated(async (req, res) => {
+  const { firstName, lastName, email, password } = req.body
   try {
     const user = await User.findById(req.user._id)
-
     if (user) {
-      user.firstName = req.body.firstName || user.firstName
-      user.lastName = req.body.lastName || user.lastName
-      user.email = req.body.email || user.email
-
+      user.firstName = firstName || user.firstName
+      user.lastName = lastName || user.lastName
+      user.email = email || user.email
       const salt = await bcrypt.genSalt(10)
-      if (req.body.password) {
-        user.password = await bcrypt.hash(req.body.password, salt)
+      if (password) {
+        user.password = await bcrypt.hash(password, salt)
       }
-
       const updatedUser = await user.save()
       const token = jwt.sign(
-        { email: updatedUser.email, id: updatedUser._id },
-        config.secret,
+        { userId: updatedUser._id },
+        process.env.JWT_SECRET,
         {
           expiresIn: "7d",
         }
       )
-
       return res.json({
         _id: updatedUser._id,
         firstName: updatedUser.firstName,
@@ -58,7 +56,7 @@ export const updateUserProfile = async (req, res) => {
     res.status(500)
     throw new Error("Server Error")
   }
-}
+})
 
 //Admin Route
 export const getUsers = Authenticated(async (req, res) => {
@@ -104,7 +102,6 @@ export const getUserById = Authenticated(async (req, res) => {
 export const adminUpdateUser = Authenticated(async (req, res) => {
   if (req.user.role === "admin") {
     const { firstName, lastName, email, role } = req.body
-    console.log(firstName, lastName, email, role)
     try {
       const user = await User.findById(req.query.id)
       if (user && req.body) {

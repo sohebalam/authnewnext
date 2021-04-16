@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
-import CssBaseline from "@material-ui/core/CssBaseline"
+
 import TextField from "@material-ui/core/TextField"
 import { parseCookies } from "nookies"
 import Link from "@material-ui/core/Link"
@@ -11,20 +11,6 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 
-import { Alert } from "@material-ui/lab"
-import {
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@material-ui/core"
-import { useRouter } from "next/router"
 import CreateIcon from "@material-ui/icons/Create"
 
 const useStyles = makeStyles((theme) => ({
@@ -48,31 +34,32 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const UserEditPage = (props) => {
-  const router = useRouter()
-  const userId = router.query
+  // const userId = router.query
   const classes = useStyles()
 
   useEffect(() => {
     setLastName(props.lastName)
     setFirstName(props.firstName)
     setEmail(props.email)
-    setRole(props.role)
+    // setRole(props.role)
   }, [])
 
   const [email, setEmail] = useState("")
-
+  const [password, setPassword] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [role, setRole] = useState(false)
+  // const [role, setRole] = useState(false)
 
-  const id = userId.userId
+  // const id = userId
+  const { _id: id } = props
   // console.log(id)
+
   const submitHandler = async (e) => {
     e.preventDefault()
 
     const { token } = parseCookies()
 
-    const res = await fetch(`${baseUrl}/api/auth/users/${id}`, {
+    const res = await fetch(`${baseUrl}/api/auth/user/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -82,16 +69,17 @@ const UserEditPage = (props) => {
         firstName,
         lastName,
         email,
-        role,
+        password,
       }),
     })
 
     const result = await res.json()
+    console.log(result)
   }
 
   return (
     <Grid container>
-      <Link href="/userslist">
+      <Link href="/">
         <Button
           variant="outlined"
           underline="none"
@@ -101,10 +89,8 @@ const UserEditPage = (props) => {
           Go Back
         </Button>
       </Link>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <Grid item xs={12} sm={12}>
-          <h1>Edit User</h1>
-          <CssBaseline />
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               <CreateIcon />
@@ -153,18 +139,21 @@ const UserEditPage = (props) => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
-                {/* <FormControlLabel
-                  control={
-                    <Checkbox
-                      style={{ marginLeft: "1rem" }}
-                      checked={role}
-                      onChange={(e) => setRole(e.target.checked)}
-                      inputProps={{ "aria-label": "primary checkbox" }}
-                    />
-                  }
-                  label="Is Admin"
-                /> */}
-                <RadioGroup
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Grid>
+
+                {/* <RadioGroup
                   row
                   aria-label="gender"
                   name="User Type"
@@ -181,7 +170,7 @@ const UserEditPage = (props) => {
                     control={<Radio />}
                     label="Admin"
                   />
-                </RadioGroup>
+                </RadioGroup> */}
               </Grid>
               <Button
                 type="submit"
@@ -218,7 +207,7 @@ export async function getServerSideProps(ctx) {
   }
   const { userId } = ctx.query
   const id = userId
-  const res = await fetch(`${baseUrl}/api/auth/users/${id}`, {
+  const res = await fetch(`${baseUrl}/api/auth/user/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
