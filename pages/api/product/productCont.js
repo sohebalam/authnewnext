@@ -45,21 +45,34 @@ export const updateProduct = async (req, res) => {
   const { id } = req.query
   const { title, description, price, selectedFile } = req.body
 
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No Product with id: ${id}`)
+  const product = await Product.findById(id)
 
-  const updatedProduct = {
-    title,
-    description,
-    price,
-
-    selectedFile,
-    _id: id,
+  if (product) {
+    product.title
+    product.description
+    product.price
+    product.selectedFile
+    const updatedProduct = await product.save()
+    res.json(updatedProduct)
+  } else {
+    res.status(404).json({ error: "product not found" })
   }
 
-  await Product.findByIdAndUpdate(id, updatedProduct, { new: true })
+  // if (!mongoose.Types.ObjectId.isValid(id))
+  //   return res.status(404).send(`No Product with id: ${id}`)
 
-  res.json(updatedProduct)
+  // const updatedProduct = {
+  //   title,
+  //   description,
+  //   price,
+
+  //   selectedFile,
+  //   _id: id,
+  // }
+
+  // await Product.findByIdAndUpdate(id, updatedProduct, { new: true })
+
+  // res.json(updatedProduct)
 }
 
 export const deleteProduct = Authenticated(async (req, res) => {

@@ -35,13 +35,13 @@ const AdminMenu = () => {
         <Link href="/admin/userlist" underline="none">
           <MenuItem onClick={handleClose}>Users</MenuItem>
         </Link>
-        <Link href="/admin/upload" underline="none">
-          <MenuItem onClick={handleClose}>Products</MenuItem>
+        <Link href="/admin/productlist" underline="none">
+          <MenuItem onClick={handleClose}>Courses</MenuItem>
         </Link>
         {/* <Link href="/orderslist" underline="none">
           <MenuItem onClick={handleClose}>Orders</MenuItem>
-        </Link>
-        <Link href="/coursesadmin" underline="none">
+        </Link> */}
+        {/* <Link href="/coursesupload" underline="none">
           <MenuItem onClick={handleClose}>Courses</MenuItem>
         </Link> */}
       </Menu>
