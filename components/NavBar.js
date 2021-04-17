@@ -87,7 +87,7 @@ export default function NavBar() {
                       marginTop: "0.75",
                     }}
                   >
-                    <ProfileMenu />
+                    <ProfileMenu user={user} />
                   </div>
                 </>
               )}

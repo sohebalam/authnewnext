@@ -4,11 +4,11 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { Link } from "@material-ui/core"
 import PersonIcon from "@material-ui/icons/Person"
-import { parseCookies } from "nookies"
+// import { parseCookies } from "nookies"
 
-const ProfileMenu = () => {
-  const cookieuser = parseCookies()
-  const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
+const ProfileMenu = ({ user }) => {
+  // const cookieuser = parseCookies()
+  // const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
   const { _id: id } = user
   // console.log(id)
   const [anchorEl, setAnchorEl] = React.useState(null)
