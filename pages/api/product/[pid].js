@@ -1,7 +1,7 @@
 import connectDB from "../../../utils/connectDB"
 import Products from "../../../models/productModel"
 // import auth from "../../../middleware/auth"
-import { deleteProduct } from "./productCont"
+import { deleteProduct, updateProduct } from "./productCont"
 
 connectDB()
 

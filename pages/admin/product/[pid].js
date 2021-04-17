@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,7 @@ const ProductId = ({ product }) => {
   const [selectedFile, setSelectedFile] = useState("")
   const [description, setDescription] = useState("")
   const classes = useStyles()
+  const router = useRouter()
   useEffect(() => {
     setTitle(product.title)
     setPrice(product.price)
@@ -50,10 +52,13 @@ const ProductId = ({ product }) => {
     setDescription(product.description)
   }, [])
 
+  const { pid } = router.query
+  // console.log(pid)
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     // console.log(title, price, selectedFile, description)
-    const res = await fetch(`${baseURL}/api/product/products`, {
+    const res = await fetch(`${baseUrl}/api/product/${pid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

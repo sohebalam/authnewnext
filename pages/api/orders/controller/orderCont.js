@@ -1,6 +1,7 @@
 import Authenticated from "../../../../utils/Authenticated"
 import Order from "../../../../models/orderModel"
 import User from "../../../../models/userModel"
+
 export const addOrderItems = Authenticated(async (req, res) => {
   const { cart: orderItems, payment, subtotal, address, tax, total } = req.body
 
@@ -84,9 +85,16 @@ export const getMyOrders = Authenticated(async (req, res) => {
   }
 })
 export const getOrders = async (req, res) => {
+  // console.log(req.method)
   try {
-    const orders = await Order.find().populate("user", "id firstName lastName")
-    res.json(orders)
+    const orders = await Order.find().populate(
+      "user",
+      "id firstName lastName",
+      User
+    )
+
+    // console.log(orders)
+    res.json({ orders })
   } catch (error) {
     res.status(500).json({ messsage: "Server Error" })
   }

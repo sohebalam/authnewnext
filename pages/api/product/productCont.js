@@ -41,39 +41,25 @@ export const createProduct = async (req, res) => {
   }
 }
 
-export const updateProduct = async (req, res) => {
-  const { id } = req.query
+export const updateProduct = Authenticated(async (req, res) => {
+  const { pid: id } = req.query
   const { title, description, price, selectedFile } = req.body
 
-  const product = await Product.findById(id)
+  if (req.user.role === "admin") {
+    const product = await Product.findById(id)
 
-  if (product) {
-    product.title
-    product.description
-    product.price
-    product.selectedFile
-    const updatedProduct = await product.save()
-    res.json(updatedProduct)
-  } else {
-    res.status(404).json({ error: "product not found" })
+    if (product) {
+      product.title = title
+      product.description = description
+      product.price = price
+      product.selectedFile = selectedFile
+      const updatedProduct = await product.save()
+      res.json(updatedProduct)
+    } else {
+      res.status(404).json({ error: "product not found" })
+    }
   }
-
-  // if (!mongoose.Types.ObjectId.isValid(id))
-  //   return res.status(404).send(`No Product with id: ${id}`)
-
-  // const updatedProduct = {
-  //   title,
-  //   description,
-  //   price,
-
-  //   selectedFile,
-  //   _id: id,
-  // }
-
-  // await Product.findByIdAndUpdate(id, updatedProduct, { new: true })
-
-  // res.json(updatedProduct)
-}
+})
 
 export const deleteProduct = Authenticated(async (req, res) => {
   const { pid: id } = req.query
