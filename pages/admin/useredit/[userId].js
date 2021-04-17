@@ -153,6 +153,26 @@ const UserEditPage = (props) => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <RadioGroup
+                    row
+                    aria-label="gender"
+                    name="User Type"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <FormControlLabel
+                      value="user"
+                      control={<Radio />}
+                      label="User"
+                    />
+                    <FormControlLabel
+                      value="admin"
+                      control={<Radio />}
+                      label="Admin"
+                    />
+                  </RadioGroup>
+                </Grid>
                 {/* <FormControlLabel
                   control={
                     <Checkbox
@@ -164,24 +184,6 @@ const UserEditPage = (props) => {
                   }
                   label="Is Admin"
                 /> */}
-                <RadioGroup
-                  row
-                  aria-label="gender"
-                  name="User Type"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <FormControlLabel
-                    value="user"
-                    control={<Radio />}
-                    label="User"
-                  />
-                  <FormControlLabel
-                    value="admin"
-                    control={<Radio />}
-                    label="Admin"
-                  />
-                </RadioGroup>
               </Grid>
               <Button
                 type="submit"

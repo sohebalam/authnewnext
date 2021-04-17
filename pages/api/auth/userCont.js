@@ -13,7 +13,6 @@ export const getUserProfile = Authenticated(async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role,
       })
     }
   } catch (error) {

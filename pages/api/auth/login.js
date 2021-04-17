@@ -20,10 +20,10 @@ export default async (req, res) => {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       })
-      const { firstName, lastName, role, email } = user
+      const { firstName, lastName, role, email, _id } = user
       res
         .status(201)
-        .json({ token, user: { firstName, lastName, role, email } })
+        .json({ token, user: { firstName, lastName, role, email, _id } })
     } else {
       return res.status(401).json({ error: "Invalid credentials" })
     }
