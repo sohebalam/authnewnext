@@ -1,6 +1,6 @@
 import connectDB from "../../../utils/connectDB"
 import Product from "../../../models/productModel"
-
+import Authenticated from "../../../utils/Authenticated"
 connectDB()
 
 export default async (req, res) => {
