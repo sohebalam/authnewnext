@@ -68,7 +68,7 @@ export default function NavBar() {
             <>
               {user && (
                 <>
-                  <Box
+                  <div
                     style={{
                       marginRight: "0.25rem",
                       marginLeft: "0.75rem",
@@ -79,8 +79,8 @@ export default function NavBar() {
                       {" "}
                       Hello {user?.firstName} {user?.lastName}
                     </Typography>
-                  </Box>
-                  <Box
+                  </div>
+                  <div
                     style={{
                       marginRight: "0.25rem",
                       marginLeft: "0.75rem",
@@ -88,7 +88,7 @@ export default function NavBar() {
                     }}
                   >
                     <ProfileMenu />
-                  </Box>
+                  </div>
                 </>
               )}
 

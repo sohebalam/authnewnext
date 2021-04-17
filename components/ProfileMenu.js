@@ -9,7 +9,7 @@ import { parseCookies } from "nookies"
 const ProfileMenu = () => {
   const cookieuser = parseCookies()
   const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
-  const { _id: userId } = user
+  const { _id: id } = user
   // console.log(id)
   const [anchorEl, setAnchorEl] = React.useState(null)
 
@@ -39,7 +39,7 @@ const ProfileMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Link href={`/users/${userId}`} underline="none">
+        <Link href={`/user/${id}`} underline="none">
           <MenuItem onClick={handleClose}>Personal Details</MenuItem>
         </Link>
         {/* <Link href={`/orders/${orderId}`} underline="none"> */}
